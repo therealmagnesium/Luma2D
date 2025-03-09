@@ -44,7 +44,7 @@ elif [[ $config = "clean" ]]
 then
     rm -rf bin build
     rm Makefile
-    rm LumaEditor/Makefile
+    rm LumaEditor/*.make
     rm Luma2D/Makefile
 else
     system="$2"

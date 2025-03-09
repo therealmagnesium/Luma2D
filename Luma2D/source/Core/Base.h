@@ -1,5 +1,5 @@
 #pragma once
-#include <stdbool.h>
+#include <stdlib.h>
 #include <stdint.h>
 #include <stdarg.h>
 
@@ -24,4 +24,11 @@ typedef bool b8;
 #define V4_OPEN(v) v.x, v.y, v.z, v.w
 
 #define LEN(array) sizeof(array) / sizeof(array[0])
-#define ASSERT_MSG(expression, message)
+#define ASSERT_MSG(expression, message)                                                                                \
+    {                                                                                                                  \
+        if (!(expression))                                                                                             \
+        {                                                                                                              \
+            printf("Failed assertion: %s\n", message);                                                                 \
+            exit(1);                                                                                                   \
+        }                                                                                                              \
+    }

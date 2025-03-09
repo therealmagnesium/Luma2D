@@ -1,14 +1,24 @@
-#include "LumaEditor.h"
-#include <stdio.h>
+#include <Luma2D.h>
+
+using namespace Luma2D::Core;
 
 int main(int argc, char** argv)
 {
-    ApplicationSpecification appInfo;
-    appInfo.name = "Luma2D Editor";
-    appInfo.author = "Magnus Ahlstromer V";
+    PlugData plugData;
+    plugData.libPath = "../LumaMain/libLumaMain.so";
+    plugData.createSym = "_Z15Luma2D_OnCreatev";
+    plugData.updateSym = "_Z15Luma2D_OnUpdatev";
+    plugData.renderSym = "_Z15Luma2D_OnRenderv";
+    plugData.renderUISym = "_Z17Luma2D_OnRenderUIv";
+    plugData.shutdownSym = "_Z17Luma2D_OnShutdownv";
 
-    LumaEditor editor(appInfo);
-    editor.Run();
+    ApplicationSpecification appInfo;
+    appInfo.name = "Luma Editor";
+    appInfo.author = "Magnus Ahlstromer V";
+    appInfo.plugData = plugData;
+
+    Application lumaEditor(appInfo);
+    lumaEditor.Run();
 
     return 0;
 }

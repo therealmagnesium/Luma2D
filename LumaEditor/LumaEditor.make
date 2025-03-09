@@ -92,7 +92,6 @@ all: prebuild prelink $(TARGET)
 endif
 
 OBJECTS := \
-	$(OBJDIR)/LumaEditor.o \
 	$(OBJDIR)/Main.o \
 
 RESOURCES := \
@@ -152,9 +151,6 @@ else
 $(OBJECTS): | $(OBJDIR)
 endif
 
-$(OBJDIR)/LumaEditor.o: source/LumaEditor.cpp
-	@echo $(notdir $<)
-	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
 $(OBJDIR)/Main.o: source/Main.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"

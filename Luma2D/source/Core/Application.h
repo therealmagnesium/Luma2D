@@ -1,8 +1,9 @@
 #pragma once
 #include "Core/Base.h"
+#include "Core/Plug.h"
 
-#include <raylib.h>
 #include <string>
+#include <raylib.h>
 
 namespace Luma2D
 {
@@ -10,9 +11,10 @@ namespace Luma2D
     {
         struct ApplicationSpecification
         {
-            std::string name = "Untitled Project";
-            std::string author = "None";
-            std::string version = "1.0";
+            std::string name;
+            std::string version;
+            std::string author;
+            PlugData plugData;
             u32 windowWidth = 1280;
             u32 windowHeight = 720;
             u32 targetFramerate = 60;
@@ -22,24 +24,21 @@ namespace Luma2D
         {
         public:
             Application(const ApplicationSpecification& appInfo);
-            virtual ~Application();
+            ~Application();
 
-            inline ApplicationSpecification& GetInfo() { return m_specification; }
+            inline void SetClearColor(const Color& color) { m_clearColor = color; }
+
+            inline Color& GetClearColor() { return m_clearColor; }
+            inline PlugState& GetPlugState() { return m_plug; }
 
             void Run();
             void Quit();
 
         private:
-            virtual void OnCreate() = 0;
-            virtual void OnUpdate() = 0;
-            virtual void OnRender() {}
-            virtual void OnRenderUI() {}
-            virtual void OnShutdown() {}
-
-        private:
             bool m_isRunning = true;
-            ApplicationSpecification m_specification;
             Color m_clearColor = RAYWHITE;
+            ApplicationSpecification m_specification;
+            PlugState m_plug;
         };
 
         extern Application* App;

@@ -3,14 +3,13 @@
 
 using namespace Luma2D::Core;
 
-class LumaEditor : public Application
+struct LumaEditorState
 {
-public:
-    LumaEditor(const ApplicationSpecification& appInfo) : Application(appInfo) {}
-    ~LumaEditor() = default;
-
-    void OnCreate() override {}
-    void OnUpdate() override {}
-
-private:
+    PlugState plug;
 };
+
+void Luma2D_OnCreate();
+void Luma2D_OnUpdate();
+void Luma2D_OnRender();
+void Luma2D_OnRenderUI();
+void Luma2D_OnShutdown();

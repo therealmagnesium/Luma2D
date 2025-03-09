@@ -16,7 +16,7 @@ files({
 
 includedirs({
 	"source",
-	"../LumaEditor/source/Test",
+	"../LumaEditor/source",
 })
 
 libdirs({})

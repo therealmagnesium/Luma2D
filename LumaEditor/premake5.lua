@@ -1,6 +1,6 @@
 local outputdir = "%{cfg.buildcfg}-%{cfg.system}"
 
-project("Test")
+project("LumaMain")
 kind("SharedLib")
 language("C++")
 cppdialect("C++17")
@@ -10,8 +10,8 @@ targetdir("../bin/" .. outputdir .. "/%{prj.name}")
 objdir("../build/" .. outputdir .. "/%{prj.name}")
 
 files({
-    "source/Test/Test.h",
-    "source/Test/Test.cpp",
+    "source/LumaEditor.h",
+    "source/LumaEditor.cpp",
 })
 
 includedirs({
@@ -21,6 +21,7 @@ includedirs({
 libdirs({})
 
 links({
+    "Luma2D",
     "raylib",
 })
 
@@ -65,8 +66,7 @@ targetdir("../bin/" .. outputdir .. "/%{prj.name}")
 objdir("../build/" .. outputdir .. "/%{prj.name}")
 
 files({
-    "source/*.h",
-    "source/*.cpp",
+    "source/Main.cpp",
 })
 
 includedirs({
