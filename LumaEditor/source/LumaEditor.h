@@ -2,10 +2,11 @@
 #include <Luma2D.h>
 
 using namespace Luma2D::Core;
+using namespace Luma2D::Graphics;
 
 struct LumaEditorState
 {
-    PlugState plug;
+    Shape shape;
 };
 
 void Luma2D_OnCreate();

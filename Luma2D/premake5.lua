@@ -10,19 +10,21 @@ targetdir("../bin/" .. outputdir .. "/%{prj.name}")
 objdir("../build/" .. outputdir .. "/%{prj.name}")
 
 files({
-	"source/Core/**.h",
-	"source/Core/**.cpp",
+	"source/**.h",
+	"source/**.cpp",
 })
 
 includedirs({
 	"source",
 	"../LumaEditor/source",
+	"../vendor/imgui/include",
 })
 
 libdirs({})
 
 links({
 	"raylib",
+	"imgui",
 })
 
 filter("system:linux")

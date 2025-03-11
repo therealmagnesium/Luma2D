@@ -7,5 +7,6 @@ configurations({
     "Dist",
 })
 
+include("vendor/imgui")
 include("Luma2D")
 include("LumaEditor")

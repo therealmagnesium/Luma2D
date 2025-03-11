@@ -12,9 +12,6 @@ namespace Luma2D
         {
             PlugState plug;
 
-            if (plug.libHandle != NULL)
-                dlclose(plug.libHandle);
-
             plug.libHandle = dlopen(data.libPath.c_str(), RTLD_NOW);
             ASSERT_MSG(plug.libHandle != NULL, "Failed to load plugin data!");
 
@@ -46,6 +43,7 @@ namespace Luma2D
             {
                 TraceLog(LOG_INFO, "Unloading the plugin code...");
                 dlclose(plug.libHandle);
+                plug.isValid = false;
             }
         }
     }

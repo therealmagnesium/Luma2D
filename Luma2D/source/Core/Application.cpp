@@ -2,6 +2,7 @@
 #include "Core/Plug.h"
 
 #include <raylib.h>
+#include <rlImGui.h>
 
 namespace Luma2D
 {
@@ -28,6 +29,9 @@ namespace Luma2D
 
             InitWindow(m_specification.windowWidth, m_specification.windowHeight, m_specification.name.c_str());
             SetTargetFPS(m_specification.targetFramerate);
+            SetExitKey(KEY_NULL);
+
+            rlImGuiSetup(true);
 
             m_plug = LoadPluginCode(m_specification.plugData);
             plugCreate = m_plug.plugins[m_specification.plugData.createSym];
@@ -41,6 +45,9 @@ namespace Luma2D
 
         Application::~Application()
         {
+            TraceLog(LOG_INFO, "Exiting the application...");
+
+            rlImGuiShutdown();
             UnloadPlugin(m_plug);
             CloseWindow();
         }
@@ -53,20 +60,39 @@ namespace Luma2D
             {
                 m_isRunning = !WindowShouldClose();
 
+                if (IsKeyPressed(KEY_ESCAPE))
+                    Quit();
+
                 if (IsKeyPressed(KEY_THREE))
                 {
+                    plugShutdown();
+
                     UnloadPlugin(m_plug);
                     m_plug = LoadPluginCode(m_specification.plugData);
+
+                    plugCreate = m_plug.plugins[m_specification.plugData.createSym];
+                    plugUpdate = m_plug.plugins[m_specification.plugData.updateSym];
+                    plugRender = m_plug.plugins[m_specification.plugData.renderSym];
+                    plugRenderUI = m_plug.plugins[m_specification.plugData.renderUISym];
+                    plugShutdown = m_plug.plugins[m_specification.plugData.shutdownSym];
+
+                    plugCreate();
                 }
 
                 plugUpdate();
 
                 BeginDrawing();
-                ClearBackground(m_clearColor);
+                {
+                    ClearBackground(m_clearColor);
 
-                plugRender();
-                plugRenderUI();
+                    plugRender();
 
+                    rlImGuiBegin();
+                    {
+                        plugRenderUI();
+                    }
+                    rlImGuiEnd();
+                }
                 EndDrawing();
             }
 

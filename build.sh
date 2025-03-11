@@ -43,9 +43,11 @@ then
 elif [[ $config = "clean" ]]
 then
     rm -rf bin build
+    rm -rf vendor/imgui/bin vendor/imgui/build
     rm Makefile
     rm LumaEditor/*.make
     rm Luma2D/Makefile
+    rm vendor/imgui/Makefile
 else
     system="$2"
     premake5 gmake

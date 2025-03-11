@@ -28,7 +28,7 @@ typedef bool b8;
     {                                                                                                                  \
         if (!(expression))                                                                                             \
         {                                                                                                              \
-            printf("Failed assertion: %s\n", message);                                                                 \
+            printf("ASSERTION FAILED %s\n", message);                                                                  \
             exit(1);                                                                                                   \
         }                                                                                                              \
     }

@@ -10,37 +10,39 @@ targetdir("../bin/" .. outputdir .. "/%{prj.name}")
 objdir("../build/" .. outputdir .. "/%{prj.name}")
 
 files({
-    "source/LumaEditor.h",
-    "source/LumaEditor.cpp",
+	"source/LumaEditor.h",
+	"source/LumaEditor.cpp",
 })
 
 includedirs({
-    "../Luma2D/source",
+	"../Luma2D/source",
+	"../vendor/imgui/include",
 })
 
 libdirs({})
 
 links({
-    "Luma2D",
-    "raylib",
+	"Luma2D",
+	"raylib",
+	"imgui",
 })
 
 postbuildcommands({
-    --"cp -r assets/ %{cfg.buildtarget.directory}",
-    --"cp -r scenes/ %{cfg.buildtarget.directory}",
-    --"cp ../imgui.ini %{cfg.buildtarget.directory}",
+	--"cp -r assets/ %{cfg.buildtarget.directory}",
+	--"cp -r scenes/ %{cfg.buildtarget.directory}",
+	--"cp ../imgui.ini %{cfg.buildtarget.directory}",
 })
 
 filter("system:linux")
 links({})
 defines({
-    "PLATFORM_LINUX",
+	"PLATFORM_LINUX",
 })
 
 filter("system:windows")
 links({})
 defines({
-    "PLATFORM_WINDOWS",
+	"PLATFORM_WINDOWS",
 })
 
 filter("configurations:Debug")
@@ -66,35 +68,35 @@ targetdir("../bin/" .. outputdir .. "/%{prj.name}")
 objdir("../build/" .. outputdir .. "/%{prj.name}")
 
 files({
-    "source/Main.cpp",
+	"source/Main.cpp",
 })
 
 includedirs({
-    "../Luma2D/source",
+	"../Luma2D/source",
 })
 
 libdirs({})
 
 links({
-    "Luma2D",
+	"Luma2D",
 })
 
 postbuildcommands({
-    --"cp -r assets/ %{cfg.buildtarget.directory}",
-    --"cp -r scenes/ %{cfg.buildtarget.directory}",
-    --"cp ../imgui.ini %{cfg.buildtarget.directory}",
+	--"cp -r assets/ %{cfg.buildtarget.directory}",
+	--"cp -r scenes/ %{cfg.buildtarget.directory}",
+	--"cp ../imgui.ini %{cfg.buildtarget.directory}",
 })
 
 filter("system:linux")
 links({})
 defines({
-    "PLATFORM_LINUX",
+	"PLATFORM_LINUX",
 })
 
 filter("system:windows")
 links({})
 defines({
-    "PLATFORM_WINDOWS",
+	"PLATFORM_WINDOWS",
 })
 
 filter("configurations:Debug")

@@ -2,3 +2,5 @@
 #include "Core/Application.h"
 #include "Core/Base.h"
 #include "Core/Plug.h"
+
+#include "Graphics/Shape.h"
