@@ -7,6 +7,9 @@ using namespace Luma2D::Graphics;
 struct LumaEditorState
 {
     Shape shape;
+    Sprite sprite;
+    Animation animation;
+    Texture texture;
 };
 
 void Luma2D_OnCreate();

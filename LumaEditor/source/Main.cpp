@@ -16,6 +16,7 @@ int main(int argc, char** argv)
     appInfo.name = "Luma Editor";
     appInfo.author = "Magnus Ahlstromer V";
     appInfo.plugData = plugData;
+    appInfo.targetFramerate = 60;
 
     Application lumaEditor(appInfo);
     lumaEditor.Run();

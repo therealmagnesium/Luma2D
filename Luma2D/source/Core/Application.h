@@ -30,6 +30,7 @@ namespace Luma2D
 
             inline Color& GetClearColor() { return m_clearColor; }
             inline PlugState& GetPlugState() { return m_plug; }
+            inline ApplicationSpecification& GetInfo() { return m_specification; }
 
             void Run();
             void Quit();
