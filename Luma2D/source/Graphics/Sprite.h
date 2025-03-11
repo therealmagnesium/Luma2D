@@ -16,7 +16,7 @@ namespace Luma2D
             Texture* texture = NULL;
         };
 
-        Sprite CreateSprite(Texture* texture, Vector2 position, float rotation, float scale);
+        Sprite CreateSprite(Texture* texture, Vector2 position, float rotation, float scale, Vector2 origin);
         void DrawSprite(Sprite& sprite, const Color& tint);
     }
 }

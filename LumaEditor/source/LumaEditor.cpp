@@ -8,8 +8,11 @@ static LumaEditorState state;
 
 void Luma2D_OnCreate()
 {
-    state.texture = LoadTexture("assets/Cherries.png");
-    SetTextureFilter(state.texture, TEXTURE_FILTER_POINT);
+    state.idleTexture = LoadTexture("assets/Idle.png");
+    state.runTexture = LoadTexture("assets/Run.png");
+
+    SetTextureFilter(state.idleTexture, TEXTURE_FILTER_POINT);
+    SetTextureFilter(state.runTexture, TEXTURE_FILTER_POINT);
 
     state.shape.position = (Vector2){400.f, 400.f};
     state.shape.rotation = 0.f;
@@ -19,17 +22,36 @@ void Luma2D_OnCreate()
     state.shape.lineThickness = 8.f;
     state.shape.color = BLUE;
 
-    state.sprite = CreateSprite(&state.texture, (Vector2){600.f, 300.f}, 0.f, 6.f);
+    state.sprite = CreateSprite(&state.idleTexture, (Vector2){600.f, 300.f}, 0.f, 6.f, (Vector2){16.f, 16.f});
 
-    state.animation = CreateAnimation("Cherry", true, 24, 17, 0, AnimationType::Horizontal);
-    PlayAnimation(state.animation);
+    state.idleAnimation = CreateAnimation("Idle", true, 24, 11, 0, AnimationType::Horizontal);
+    state.runAnimation = CreateAnimation("Run", false, 20, 12, 0, AnimationType::Horizontal);
+
+    PlayAnimation(state.idleAnimation);
 
     App->SetClearColor(BLACK);
 }
 
 void Luma2D_OnUpdate()
 {
-    UpdateAnimation(state.animation, state.sprite);
+    if (IsKeyPressed(KEY_ONE))
+    {
+        if (state.idleAnimation.isPlaying)
+        {
+            StopAnimation(state.idleAnimation);
+            PlayAnimation(state.runAnimation);
+        }
+        else
+        {
+            StopAnimation(state.runAnimation);
+            PlayAnimation(state.idleAnimation);
+        }
+    }
+
+    if (state.idleAnimation.isPlaying)
+        UpdateAnimation(state.idleAnimation, state.sprite, &state.idleTexture);
+    else
+        UpdateAnimation(state.runAnimation, state.sprite, &state.runTexture);
 }
 
 void Luma2D_OnRender()
@@ -48,5 +70,6 @@ void Luma2D_OnRenderUI()
 
 void Luma2D_OnShutdown()
 {
-    UnloadTexture(state.texture);
+    UnloadTexture(state.idleTexture);
+    UnloadTexture(state.runTexture);
 }

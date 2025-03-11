@@ -8,8 +8,10 @@ struct LumaEditorState
 {
     Shape shape;
     Sprite sprite;
-    Animation animation;
-    Texture texture;
+    Animation idleAnimation;
+    Animation runAnimation;
+    Texture idleTexture;
+    Texture runTexture;
 };
 
 void Luma2D_OnCreate();

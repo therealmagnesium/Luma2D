@@ -24,13 +24,29 @@ namespace Luma2D
             return animation;
         }
 
+        void PauseAnimation(Animation& animation)
+        {
+            animation.isPlaying = false;
+        }
+
+        void StopAnimation(Animation& animation)
+        {
+            animation.isPlaying = false;
+            animation.currentFrame = 0;
+            animation.counter = 0;
+        }
+
         void PlayAnimation(Animation& animation)
         {
             animation.isPlaying = true;
         }
 
-        void UpdateAnimation(Animation& animation, Sprite& sprite)
+        void UpdateAnimation(Animation& animation, Sprite& sprite, Texture* texture)
         {
+            ASSERT_MSG(texture != NULL, "Cannot update animation with a null texture!");
+            sprite.texture = texture;
+
+            static bool hasPlayedOnce = false;
             float frameSize = 0.f;
 
             switch (animation.type)

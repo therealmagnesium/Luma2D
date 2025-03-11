@@ -30,6 +30,8 @@ namespace Luma2D
         Animation CreateAnimation(const std::string& name, bool isLooped, u32 speed, u32 totalFrames, u32 frameOffset,
                                   AnimationType type);
         void PlayAnimation(Animation& animation);
-        void UpdateAnimation(Animation& animation, Sprite& sprite);
+        void PauseAnimation(Animation& animation);
+        void StopAnimation(Animation& animation);
+        void UpdateAnimation(Animation& animation, Sprite& sprite, Texture* texture);
     }
 }
