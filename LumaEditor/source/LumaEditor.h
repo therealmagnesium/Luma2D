@@ -8,6 +8,7 @@ struct LumaEditorState
 {
     Shape shape;
     Sprite sprite;
+    AnimationController animController;
     Animation idleAnimation;
     Animation runAnimation;
     Texture idleTexture;

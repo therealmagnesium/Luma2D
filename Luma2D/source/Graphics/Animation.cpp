@@ -10,16 +10,16 @@ namespace Luma2D
 {
     namespace Graphics
     {
-        Animation CreateAnimation(const std::string& name, bool isLooped, u32 speed, u32 totalFrames, u32 frameOffset,
+        Animation CreateAnimation(const std::string& name, u32 speed, u32 totalFrames, u32 frameOffset,
                                   AnimationType type)
         {
             Animation animation;
             animation.name = name;
-            animation.isLooped = isLooped;
             animation.speed = speed;
             animation.totalFrames = totalFrames;
             animation.frameOffset = frameOffset;
             animation.type = type;
+            animation.isValid = true;
 
             return animation;
         }
@@ -41,11 +41,8 @@ namespace Luma2D
             animation.isPlaying = true;
         }
 
-        void UpdateAnimation(Animation& animation, Sprite& sprite, Texture* texture)
+        void UpdateAnimation(Animation& animation, Sprite& sprite)
         {
-            ASSERT_MSG(texture != NULL, "Cannot update animation with a null texture!");
-            sprite.texture = texture;
-
             static bool hasPlayedOnce = false;
             float frameSize = 0.f;
 
@@ -97,6 +94,59 @@ namespace Luma2D
                     }
                 }
             }
+        }
+
+        AnimationController CreateAnimationController(Sprite* sprite, u32 estimatedAnimCount)
+        {
+            ASSERT_MSG(sprite != NULL, "Animation Controller cannot have a null sprite reference!");
+
+            AnimationController controller;
+            controller.sprite = sprite;
+            controller.currentAnimationIndex = 0;
+            controller.animations.reserve(estimatedAnimCount);
+            controller.isValid = true;
+
+            return controller;
+        }
+
+        void AnimControllerAddAnimation(AnimationController& controller, Animation& animation, Texture* texture)
+        {
+            ASSERT_MSG(controller.isValid,
+                       "Animation Controllers must be created with CreateAnimationController(Sprite*, u32)!");
+
+            ASSERT_MSG(texture != NULL, "Cannot add animation to Animation Controller with a null texture reference!");
+
+            if (animation.isValid)
+                controller.animations.push_back(animation);
+
+            controller.animNameTextureMap[animation.name] = texture;
+        }
+
+        void AnimControllerSwitchAnimation(AnimationController& controller, u32 animIndex)
+        {
+            ASSERT_MSG(controller.isValid,
+                       "Animation Controllers must be created with CreateAnimationController(Sprite*, u32)!");
+            ASSERT_MSG(animIndex <= controller.animations.size(),
+                       "Failed to switch animations because the animIndex is out of bounds!");
+
+            StopAnimation(controller.animations[controller.currentAnimationIndex]); // Stop the previous animation
+
+            // Switch the current animation index
+            if (controller.animations[animIndex].isValid)
+                controller.currentAnimationIndex = animIndex;
+
+            PlayAnimation(controller.animations[controller.currentAnimationIndex]); // Play the new animation
+        }
+
+        void AnimControllerUpdate(AnimationController& controller)
+        {
+            ASSERT_MSG(controller.isValid,
+                       "Animation Controllers must be created with CreateAnimationController(Sprite*, u32)!");
+
+            Animation& currentAnimation = controller.animations[controller.currentAnimationIndex];
+            UpdateAnimation(currentAnimation, *controller.sprite);
+
+            controller.sprite->texture = controller.animNameTextureMap[currentAnimation.name];
         }
     }
 }

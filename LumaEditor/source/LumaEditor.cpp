@@ -24,10 +24,15 @@ void Luma2D_OnCreate()
 
     state.sprite = CreateSprite(&state.idleTexture, (Vector2){600.f, 300.f}, 0.f, 6.f, (Vector2){16.f, 16.f});
 
-    state.idleAnimation = CreateAnimation("Idle", true, 24, 11, 0, AnimationType::Horizontal);
-    state.runAnimation = CreateAnimation("Run", false, 20, 12, 0, AnimationType::Horizontal);
+    state.animController = CreateAnimationController(&state.sprite, 2);
 
-    PlayAnimation(state.idleAnimation);
+    Animation idleAnimation = CreateAnimation("Idle", 24, 11, 0, AnimationType::Horizontal);
+    Animation runAnimation = CreateAnimation("Run", 22, 12, 0, AnimationType::Horizontal);
+
+    AnimControllerAddAnimation(state.animController, idleAnimation, &state.idleTexture);
+    AnimControllerAddAnimation(state.animController, runAnimation, &state.runTexture);
+
+    PlayAnimation(state.animController.animations[state.animController.currentAnimationIndex]);
 
     App->SetClearColor(BLACK);
 }
@@ -35,23 +40,12 @@ void Luma2D_OnCreate()
 void Luma2D_OnUpdate()
 {
     if (IsKeyPressed(KEY_ONE))
-    {
-        if (state.idleAnimation.isPlaying)
-        {
-            StopAnimation(state.idleAnimation);
-            PlayAnimation(state.runAnimation);
-        }
-        else
-        {
-            StopAnimation(state.runAnimation);
-            PlayAnimation(state.idleAnimation);
-        }
-    }
+        AnimControllerSwitchAnimation(state.animController, 0);
 
-    if (state.idleAnimation.isPlaying)
-        UpdateAnimation(state.idleAnimation, state.sprite, &state.idleTexture);
-    else
-        UpdateAnimation(state.runAnimation, state.sprite, &state.runTexture);
+    if (IsKeyPressed(KEY_TWO))
+        AnimControllerSwitchAnimation(state.animController, 1);
+
+    AnimControllerUpdate(state.animController);
 }
 
 void Luma2D_OnRender()
