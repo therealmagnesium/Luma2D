@@ -28,7 +28,16 @@ typedef bool b8;
     {                                                                                                                  \
         if (!(expression))                                                                                             \
         {                                                                                                              \
-            printf("ASSERTION FAILED %s\n", message);                                                                  \
+            printf("ASSERTION FAILED: %s\n", message);                                                                 \
             exit(1);                                                                                                   \
+        }                                                                                                              \
+    }
+
+#define QUIET_ASSEERT_MSG(expression, message)                                                                         \
+    {                                                                                                                  \
+        if (!(expression))                                                                                             \
+        {                                                                                                              \
+            printf("QUIET ASSERTION FAILED: %s\n", message);                                                           \
+            return;                                                                                                    \
         }                                                                                                              \
     }

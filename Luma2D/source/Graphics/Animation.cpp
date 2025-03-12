@@ -43,6 +43,9 @@ namespace Luma2D
 
         void UpdateAnimation(Animation& animation, Sprite& sprite)
         {
+            QUIET_ASSEERT_MSG(sprite.texture != NULL,
+                              "Cannot update animation because there is no valid texture reference!");
+
             static bool hasPlayedOnce = false;
             float frameSize = 0.f;
 
@@ -143,10 +146,11 @@ namespace Luma2D
             ASSERT_MSG(controller.isValid,
                        "Animation Controllers must be created with CreateAnimationController(Sprite*, u32)!");
 
-            Animation& currentAnimation = controller.animations[controller.currentAnimationIndex];
-            UpdateAnimation(currentAnimation, *controller.sprite);
+            ASSERT_MSG(controller.sprite != NULL, "An Animation Controller has a referencce to a sprite that is null!");
 
+            Animation& currentAnimation = controller.animations[controller.currentAnimationIndex];
             controller.sprite->texture = controller.animNameTextureMap[currentAnimation.name];
+            UpdateAnimation(currentAnimation, *controller.sprite);
         }
     }
 }
