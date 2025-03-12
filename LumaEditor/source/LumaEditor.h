@@ -6,11 +6,7 @@ using namespace Luma2D::Graphics;
 
 struct LumaEditorState
 {
-    Shape shape;
-    Sprite sprite;
-    AnimationController animController;
-    Animation idleAnimation;
-    Animation runAnimation;
+    Scene activeScene;
     Texture idleTexture;
     Texture runTexture;
 };

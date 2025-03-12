@@ -63,22 +63,21 @@ namespace Luma2D
                 if (IsKeyPressed(KEY_ESCAPE))
                     Quit();
 
-                /*
-                        if (IsKeyPressed(KEY_THREE))
-                        {
-                            plugShutdown();
+                if (IsKeyPressed(KEY_THREE))
+                {
+                    plugShutdown();
 
-                            UnloadPlugin(m_plug);
-                            m_plug = LoadPluginCode(m_specification.plugData);
+                    UnloadPlugin(m_plug);
+                    m_plug = LoadPluginCode(m_specification.plugData);
 
-                            plugCreate = m_plug.plugins[m_specification.plugData.createSym];
-                            plugUpdate = m_plug.plugins[m_specification.plugData.updateSym];
-                            plugRender = m_plug.plugins[m_specification.plugData.renderSym];
-                            plugRenderUI = m_plug.plugins[m_specification.plugData.renderUISym];
-                            plugShutdown = m_plug.plugins[m_specification.plugData.shutdownSym];
+                    plugCreate = m_plug.plugins[m_specification.plugData.createSym];
+                    plugUpdate = m_plug.plugins[m_specification.plugData.updateSym];
+                    plugRender = m_plug.plugins[m_specification.plugData.renderSym];
+                    plugRenderUI = m_plug.plugins[m_specification.plugData.renderUISym];
+                    plugShutdown = m_plug.plugins[m_specification.plugData.shutdownSym];
 
-                            plugCreate();
-                        }*/
+                    plugCreate();
+                }
 
                 plugUpdate();
 

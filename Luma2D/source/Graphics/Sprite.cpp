@@ -14,6 +14,10 @@ namespace Luma2D
             sprite.rotation = rotation;
             sprite.scale = scale;
             sprite.origin = origin;
+            sprite.crop.x = 0.f;
+            sprite.crop.y = 0.f;
+            sprite.crop.width = 32.f;
+            sprite.crop.height = 32.f;
 
             return sprite;
         }
@@ -22,7 +26,7 @@ namespace Luma2D
         {
             if (sprite.texture == NULL)
             {
-                sprite.crop = (Rectangle){0.f, 0.f, 32.f, 32.f};
+                sprite.crop = (Rectangle){0.f, 0.f, 64.f, 64.f};
 
                 Vector2 size;
                 size.x = 64.f * sprite.scale;
@@ -30,12 +34,6 @@ namespace Luma2D
                 DrawRectangleV(sprite.position, size, tint);
 
                 return;
-            }
-
-            if (sprite.crop.width == 0.f || sprite.crop.height == 0.f)
-            {
-                sprite.crop.width = sprite.texture->width;
-                sprite.crop.height = sprite.texture->height;
             }
 
             Rectangle dest;

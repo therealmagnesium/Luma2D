@@ -17,6 +17,8 @@ namespace Luma2D
             Color color;
         };
 
-        void DrawShape(Shape& shape, bool isOutlined = false);
+        Shape CreateShape(Vector2 position, float rotation, float scale, float radius, float lineThickness,
+                          u32 numSides, Color color);
+        void DrawShape(Shape& shape, bool hasFill = true);
     }
 }

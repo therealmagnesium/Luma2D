@@ -1,10 +1,17 @@
 #include "LumaEditor.h"
+#include "Graphics/Animation.h"
+#include "Graphics/Shape.h"
 
 #include <Luma2D.h>
 #include <raylib.h>
 #include <imgui.h>
 
+using namespace Luma2D::Core;
+using namespace Luma2D::Graphics;
+
 static LumaEditorState state;
+static std::shared_ptr<Entity> shape = NULL;
+static std::shared_ptr<Entity> sprite = NULL;
 
 void Luma2D_OnCreate()
 {
@@ -14,50 +21,52 @@ void Luma2D_OnCreate()
     SetTextureFilter(state.idleTexture, TEXTURE_FILTER_POINT);
     SetTextureFilter(state.runTexture, TEXTURE_FILTER_POINT);
 
-    state.shape.position = (Vector2){400.f, 400.f};
-    state.shape.rotation = 0.f;
-    state.shape.scale = 1.f;
-    state.shape.numSides = 6;
-    state.shape.radius = 64.f;
-    state.shape.lineThickness = 8.f;
-    state.shape.color = BLUE;
+    shape = state.activeScene.AddEntity("Shape");
+    auto& shapeTC = shape->GetComponent<TransformComponent>();
+    auto& shapeSC = shape->AddComponent<ShapeRendererComponent>(64.f, 8.f, 6, BLUE);
+    shapeTC.position = (Vector2){400.f, 400.f};
+    shapeTC.scale = 4.f;
+    shapeSC.hasFill = false;
 
-    state.sprite = CreateSprite(&state.idleTexture, (Vector2){600.f, 300.f}, 0.f, 6.f, (Vector2){16.f, 16.f});
-
-    state.animController = CreateAnimationController(&state.sprite, 2);
+    sprite = state.activeScene.AddEntity("Sprite");
+    auto& tc = sprite->GetComponent<TransformComponent>();
+    auto& sc = sprite->AddComponent<SpriteRendererComponent>(&state.idleTexture, (Vector2){16.f, 16.f});
+    auto& ac = sprite->AddComponent<AnimatorComponent>(&sc.sprite, 2);
+    tc.position = (Vector2){800.f, 200.f};
+    tc.scale = 4.f;
 
     Animation idleAnimation = CreateAnimation("Idle", 24, 11, 0, AnimationType::Horizontal);
     Animation runAnimation = CreateAnimation("Run", 22, 12, 0, AnimationType::Horizontal);
 
-    AnimControllerAddAnimation(state.animController, idleAnimation, &state.idleTexture);
-    AnimControllerAddAnimation(state.animController, runAnimation, &state.runTexture);
-
-    PlayAnimation(state.animController.animations[state.animController.currentAnimationIndex]);
+    AnimControllerAddAnimation(ac.controller, idleAnimation, &state.idleTexture);
+    AnimControllerAddAnimation(ac.controller, runAnimation, &state.runTexture);
+    AnimControllerSwitchAnimation(ac.controller, 0);
 
     App->SetClearColor(BLACK);
 }
 
 void Luma2D_OnUpdate()
 {
+    state.activeScene.Update();
+
+    auto& ac = sprite->GetComponent<AnimatorComponent>();
+
     if (IsKeyPressed(KEY_ONE))
-        AnimControllerSwitchAnimation(state.animController, 0);
+        AnimControllerSwitchAnimation(ac.controller, 0);
 
     if (IsKeyPressed(KEY_TWO))
-        AnimControllerSwitchAnimation(state.animController, 1);
-
-    AnimControllerUpdate(state.animController);
+        AnimControllerSwitchAnimation(ac.controller, 1);
 }
 
 void Luma2D_OnRender()
 {
-    DrawShape(state.shape, true);
-    DrawSprite(state.sprite, WHITE);
+    state.activeScene.Draw();
 }
 
 void Luma2D_OnRenderUI()
 {
     DrawFPS(20, 20);
-    // DrawText("Hot Reloading", 20, 200, 64, WHITE);
+    DrawText("Hot Reloading", 20, 200, 64, WHITE);
 
     // ImGui::ShowDemoWindow();
 }
