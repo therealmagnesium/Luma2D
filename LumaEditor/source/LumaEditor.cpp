@@ -28,7 +28,7 @@ void Luma2D_OnCreate()
 
     sprite = state.activeScene.AddEntity("Sprite");
     auto& tc = sprite->GetComponent<TransformComponent>();
-    auto& sc = sprite->AddComponent<SpriteRendererComponent>((Texture*)NULL, (Vector2){16.f, 16.f});
+    auto& sc = sprite->AddComponent<SpriteRendererComponent>((Texture*)NULL, (Vector2){64.f, 64.f});
     auto& ac = sprite->AddComponent<AnimatorComponent>(&sc.sprite, 2);
     tc.position = (Vector2){800.f, 200.f};
     tc.scale = 4.f;

@@ -22,24 +22,6 @@ namespace Luma2D
 
             for (auto& entity : m_entityManager.GetEntities())
             {
-                auto& tc = entity->GetComponent<TransformComponent>();
-
-                if (entity->HasComponent<ShapeRendererComponent>())
-                {
-                    auto& sc = entity->GetComponent<ShapeRendererComponent>();
-                    sc.shape.position = tc.position;
-                    sc.shape.rotation = tc.rotation;
-                    sc.shape.scale = tc.scale;
-                }
-
-                if (entity->HasComponent<SpriteRendererComponent>())
-                {
-                    auto& sc = entity->GetComponent<SpriteRendererComponent>();
-                    sc.sprite.position = tc.position;
-                    sc.sprite.rotation = tc.rotation;
-                    sc.sprite.scale = tc.scale;
-                }
-
                 if (entity->HasComponent<AnimatorComponent>())
                 {
                     auto& ac = entity->GetComponent<AnimatorComponent>();
@@ -57,12 +39,20 @@ namespace Luma2D
                 if (entity->HasComponent<ShapeRendererComponent>())
                 {
                     auto& sc = entity->GetComponent<ShapeRendererComponent>();
+                    sc.shape.position = tc.position;
+                    sc.shape.rotation = tc.rotation;
+                    sc.shape.scale = tc.scale;
+
                     Graphics::DrawShape(sc.shape, sc.hasFill);
                 }
 
                 if (entity->HasComponent<SpriteRendererComponent>())
                 {
                     auto& sc = entity->GetComponent<SpriteRendererComponent>();
+                    sc.sprite.position = tc.position;
+                    sc.sprite.rotation = tc.rotation;
+                    sc.sprite.scale = tc.scale;
+
                     Graphics::DrawSprite(sc.sprite, sc.tint);
                 }
             }

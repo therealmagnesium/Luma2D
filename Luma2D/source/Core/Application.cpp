@@ -101,7 +101,7 @@ namespace Luma2D
                 if (IsKeyPressed(KEY_ESCAPE))
                     Quit();
 
-                if (IsKeyPressed(KEY_THREE))
+                if (IsKeyPressed(KEY_F3))
                 {
                     plugShutdown();
 

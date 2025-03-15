@@ -2,7 +2,49 @@
 
 #include <Luma2D.h>
 #include <imgui.h>
+#include <rlImGuiColors.h>
 #include <memory>
+
+static const ImGuiTreeNodeFlags treeNodeFlags = ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_Framed |
+                                                ImGuiTreeNodeFlags_SpanFullWidth | ImGuiTreeNodeFlags_AllowItemOverlap;
+
+template <typename T, typename UIFunc>
+static void DrawComponent(const char* name, std::shared_ptr<Entity>& entity, UIFunc uiFunction)
+{
+    if (entity->HasComponent<T>())
+    {
+        auto& component = entity->GetComponent<T>();
+        ImVec2 availableRegion = ImGui::GetContentRegionAvail();
+
+        ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(4.f, 4.f));
+        float lineHeight = ImGui::GetFont()->FontSize + ImGui::GetStyle().FramePadding.y * 2.f;
+        ImGui::PopStyleVar();
+
+        bool open = ImGui::TreeNodeEx((void*)typeid(T).hash_code(), treeNodeFlags, "%s", name);
+        ImGui::SameLine(availableRegion.x - lineHeight * .5f);
+
+        if (ImGui::Button("+", ImVec2(20.f, 20.f)))
+            ImGui::OpenPopup("Component Settings");
+
+        bool removeComponent = false;
+        if (ImGui::BeginPopup("Component Settings"))
+        {
+            if (ImGui::MenuItem("Remove component"))
+                removeComponent = true;
+
+            ImGui::EndPopup();
+        }
+
+        if (open)
+        {
+            uiFunction(component);
+            ImGui::TreePop();
+        }
+
+        if (removeComponent)
+            entity->RemoveComponent<T>();
+    }
+}
 
 void SceneHeirarchyPanel::SetContext(Scene* scene)
 {
@@ -31,6 +73,13 @@ void SceneHeirarchyPanel::Display()
                 ImGui::EndPopup();
             }
         }
+    }
+    ImGui::End();
+
+    ImGui::Begin("Properties Panel");
+    {
+        if (m_selectionContext != NULL)
+            this->DrawComponents(m_selectionContext);
     }
     ImGui::End();
 }
@@ -65,4 +114,72 @@ void SceneHeirarchyPanel::DrawEntityNode(std::shared_ptr<Entity>& entity)
 
 void SceneHeirarchyPanel::DrawComponents(std::shared_ptr<Entity>& entity)
 {
+    char buffer[256];
+    memset(buffer, 0, sizeof(buffer));
+    strncpy(buffer, entity->GetTag(), sizeof(buffer));
+
+    if (ImGui::InputText("##Tag", buffer, sizeof(buffer)))
+        entity->SetTag(buffer);
+
+    ImGui::SameLine();
+    ImGui::PushItemWidth(-1.f);
+
+    if (ImGui::Button("Add Component"))
+        ImGui::OpenPopup("Add Component");
+
+    if (ImGui::BeginPopup("Add Component"))
+    {
+        if (ImGui::MenuItem("Transform"))
+        {
+            m_selectionContext->AddComponent<TransformComponent>();
+            ImGui::CloseCurrentPopup();
+        }
+
+        if (ImGui::MenuItem("Shape"))
+        {
+            m_selectionContext->AddComponent<ShapeRendererComponent>();
+            ImGui::CloseCurrentPopup();
+        }
+
+        if (ImGui::MenuItem("Sprite"))
+        {
+            m_selectionContext->AddComponent<SpriteRendererComponent>();
+            ImGui::CloseCurrentPopup();
+        }
+
+        if (ImGui::MenuItem("Animator"))
+        {
+            m_selectionContext->AddComponent<AnimatorComponent>();
+            ImGui::CloseCurrentPopup();
+        }
+
+        ImGui::EndPopup();
+    }
+    ImGui::PopItemWidth();
+
+    DrawComponent<TransformComponent>("Transform", entity, [&](TransformComponent& component) {
+        ImGui::DragFloat2("Position", &component.position.x, 0.1f);
+        ImGui::DragFloat("Rotation", &component.rotation, 0.1f);
+        ImGui::DragFloat("Scale", &component.scale, 0.1f);
+    });
+
+    DrawComponent<ShapeRendererComponent>("Shape Renderer", entity, [&](ShapeRendererComponent& component) {
+        ImVec4 shapeColor = rlImGuiColors::Convert(component.shape.color);
+
+        ImGui::Checkbox("Has Fill?", &component.hasFill);
+        ImGui::DragFloat("Radius", &component.shape.radius);
+        ImGui::DragFloat("Border Thickness", &component.shape.lineThickness);
+        ImGui::DragInt("Edge Count", (s32*)&component.shape.numSides, 0.5f, 3, 32);
+        ImGui::ColorEdit3("Color", &shapeColor.x);
+
+        component.shape.color = rlImGuiColors::Convert(shapeColor);
+    });
+
+    DrawComponent<SpriteRendererComponent>("Sprite Renderer", entity, [&](SpriteRendererComponent& component) {
+        ImVec4 tint = rlImGuiColors::Convert(component.tint);
+        ImGui::DragFloat2("Origin", &component.sprite.origin.x);
+        ImGui::ColorEdit3("Tint", &tint.x);
+
+        component.tint = rlImGuiColors::Convert(tint);
+    });
 }
