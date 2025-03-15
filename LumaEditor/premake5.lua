@@ -12,6 +12,8 @@ objdir("../build/" .. outputdir .. "/%{prj.name}")
 files({
     "source/LumaEditor.h",
     "source/LumaEditor.cpp",
+    "source/Panels/*.h",
+    "source/Panels/*.cpp",
 })
 
 includedirs({
@@ -84,7 +86,7 @@ links({
 postbuildcommands({
     "cp -r assets/ %{cfg.buildtarget.directory}",
     --"cp -r scenes/ %{cfg.buildtarget.directory}",
-    --"cp ../imgui.ini %{cfg.buildtarget.directory}",
+    "cp ../imgui.ini %{cfg.buildtarget.directory}",
 })
 
 filter("system:linux")

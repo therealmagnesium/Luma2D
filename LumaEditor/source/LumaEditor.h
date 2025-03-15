@@ -1,4 +1,5 @@
 #pragma once
+#include "Panels/SceneViewportPanel.h"
 #include <Luma2D.h>
 
 using namespace Luma2D::Core;
@@ -7,6 +8,7 @@ using namespace Luma2D::Graphics;
 struct LumaEditorState
 {
     Scene activeScene;
+    SceneViewportPanel sceneViewportPanel;
     Texture idleTexture;
     Texture runTexture;
 };

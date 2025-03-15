@@ -30,6 +30,7 @@ namespace Luma2D
 
             inline Color& GetClearColor() { return m_clearColor; }
             inline PlugState& GetPlugState() { return m_plug; }
+            inline RenderTexture& GetFramebuffer() { return m_framebuffer; }
             inline ApplicationSpecification& GetInfo() { return m_specification; }
 
             void Run();
@@ -38,8 +39,9 @@ namespace Luma2D
         private:
             bool m_isRunning = true;
             Color m_clearColor = RAYWHITE;
-            ApplicationSpecification m_specification;
             PlugState m_plug;
+            RenderTexture m_framebuffer;
+            ApplicationSpecification m_specification;
         };
 
         extern Application* App;
