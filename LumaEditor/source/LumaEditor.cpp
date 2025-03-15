@@ -40,9 +40,10 @@ void Luma2D_OnCreate()
     AnimControllerAddAnimation(ac.controller, runAnimation, &state.runTexture);
     AnimControllerSwitchAnimation(ac.controller, 0);
 
+    state.sceneHeirarchyPanel.SetContext(&state.activeScene);
     state.sceneViewportPanel.SetContext(&state.activeScene);
 
-    App->SetClearColor(BLACK);
+    App->SetClearColor((Color){15, 15, 15, 255});
 }
 
 void Luma2D_OnUpdate()
@@ -69,6 +70,8 @@ void Luma2D_OnRenderUI()
 
     ImGui::DockSpaceOverViewport();
     ImGui::ShowDemoWindow();
+
+    state.sceneHeirarchyPanel.Display();
     state.sceneViewportPanel.Display();
 }
 

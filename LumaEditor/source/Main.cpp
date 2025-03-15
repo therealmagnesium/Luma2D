@@ -15,6 +15,8 @@ int main(int argc, char** argv)
     ApplicationSpecification appInfo;
     appInfo.name = "Luma Editor";
     appInfo.author = "Magnus Ahlstromer V";
+    appInfo.windowWidth = 1600;
+    appInfo.windowHeight = 900;
     appInfo.plugData = plugData;
     appInfo.targetFramerate = 60;
 

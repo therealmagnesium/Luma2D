@@ -10,6 +10,8 @@ namespace Luma2D
         public:
             Scene() = default;
 
+            inline EntityVec& GetEntities() { return m_entityManager.GetEntities(); }
+
             std::shared_ptr<Entity> AddEntity(const char* tag);
             void DestroyEntity(std::shared_ptr<Entity>& entity);
             void Update();

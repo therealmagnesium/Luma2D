@@ -19,7 +19,7 @@ void SceneViewportPanel::Display()
     RenderTexture& framebuffer = App->GetFramebuffer();
     u64 framebufferID = framebuffer.texture.id;
 
-    ImGui::Begin("Scene Viewport");
+    ImGui::Begin("Scene Viewport", NULL, ImGuiWindowFlags_NoScrollbar);
     {
         ImVec2 aspectSize = GetLargestViewportSize();
         ImVec2 windowPosition = GetCenteredViewportPosition(aspectSize);
