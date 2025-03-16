@@ -6,6 +6,7 @@
 
 using namespace Luma2D::Core;
 using namespace Luma2D::Graphics;
+using namespace Luma2D::Scene;
 
 static LumaEditorState state;
 static std::shared_ptr<Entity> shape = NULL;
@@ -13,11 +14,8 @@ static std::shared_ptr<Entity> sprite = NULL;
 
 void Luma2D_OnCreate()
 {
-    state.idleTexture = LoadTexture("assets/Idle.png");
-    state.runTexture = LoadTexture("assets/Run.png");
-
-    SetTextureFilter(state.idleTexture, TEXTURE_FILTER_POINT);
-    SetTextureFilter(state.runTexture, TEXTURE_FILTER_POINT);
+    Assets->AddTexture("Player Idle", "assets/Idle.png", TEXTURE_FILTER_POINT);
+    Assets->AddTexture("Player Run", "assets/Run.png", TEXTURE_FILTER_POINT);
 
     shape = state.activeScene.AddEntity("Shape");
     auto& shapeTC = shape->GetComponent<TransformComponent>();
@@ -36,8 +34,8 @@ void Luma2D_OnCreate()
     Animation idleAnimation = CreateAnimation("Idle", 24, 11, 0, AnimationType::Horizontal);
     Animation runAnimation = CreateAnimation("Run", 22, 12, 0, AnimationType::Horizontal);
 
-    AnimControllerAddAnimation(ac.controller, idleAnimation, &state.idleTexture);
-    AnimControllerAddAnimation(ac.controller, runAnimation, &state.runTexture);
+    AnimControllerAddAnimation(ac.controller, idleAnimation, Assets->GetTexture("Player Idle"));
+    AnimControllerAddAnimation(ac.controller, runAnimation, Assets->GetTexture("Player Run"));
     AnimControllerSwitchAnimation(ac.controller, 0);
 
     state.sceneHeirarchyPanel.SetContext(&state.activeScene);
@@ -77,6 +75,4 @@ void Luma2D_OnRenderUI()
 
 void Luma2D_OnShutdown()
 {
-    UnloadTexture(state.idleTexture);
-    UnloadTexture(state.runTexture);
 }

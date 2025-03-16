@@ -1,4 +1,5 @@
 #include "Core/Application.h"
+#include "Core/AssetManager.h"
 #include "Core/Plug.h"
 
 #include <imgui.h>
@@ -32,6 +33,7 @@ namespace Luma2D
             SetTargetFPS(m_specification.targetFramerate);
             SetExitKey(KEY_NULL);
 
+            m_assetManager.Initialize();
             m_framebuffer = LoadRenderTexture(m_specification.windowWidth, m_specification.windowHeight);
 
             rlImGuiSetup(true);
@@ -84,6 +86,7 @@ namespace Luma2D
         {
             TraceLog(LOG_INFO, "Exiting the application...");
 
+            m_assetManager.Shutdown();
             rlImGuiShutdown();
             UnloadRenderTexture(m_framebuffer);
             UnloadPlugin(m_plug);

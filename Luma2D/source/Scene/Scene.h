@@ -1,9 +1,9 @@
 #pragma once
-#include "Core/EntityManager.h"
+#include "Scene/EntityManager.h"
 
 namespace Luma2D
 {
-    namespace Core
+    namespace Scene
     {
         class Scene
         {

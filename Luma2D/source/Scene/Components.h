@@ -8,7 +8,7 @@
 
 namespace Luma2D
 {
-    namespace Core
+    namespace Scene
     {
         struct TransformComponent
         {

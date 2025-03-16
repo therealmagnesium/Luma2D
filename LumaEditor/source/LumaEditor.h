@@ -5,14 +5,13 @@
 
 using namespace Luma2D::Core;
 using namespace Luma2D::Graphics;
+using namespace Luma2D::Scene;
 
 struct LumaEditorState
 {
     Scene activeScene;
     SceneHeirarchyPanel sceneHeirarchyPanel;
     SceneViewportPanel sceneViewportPanel;
-    Texture idleTexture;
-    Texture runTexture;
 };
 
 void Luma2D_OnCreate();

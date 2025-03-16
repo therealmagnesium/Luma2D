@@ -1,4 +1,5 @@
 #pragma once
+#include "Core/AssetManager.h"
 #include "Core/Base.h"
 #include "Core/Plug.h"
 
@@ -39,6 +40,7 @@ namespace Luma2D
         private:
             bool m_isRunning = true;
             Color m_clearColor = RAYWHITE;
+            AssetManager m_assetManager;
             PlugState m_plug;
             RenderTexture m_framebuffer;
             ApplicationSpecification m_specification;

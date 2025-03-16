@@ -1,6 +1,6 @@
 #pragma once
 #include "Core/Base.h"
-#include "Core/Entity.h"
+#include "Scene/Entity.h"
 
 #include <string>
 #include <unordered_map>
@@ -9,7 +9,7 @@
 
 namespace Luma2D
 {
-    namespace Core
+    namespace Scene
     {
         typedef std::vector<std::shared_ptr<Entity>> EntityVec;
         typedef std::unordered_map<std::string, EntityVec> EntityMap;

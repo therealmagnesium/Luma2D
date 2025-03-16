@@ -1,5 +1,5 @@
-#include "Core/EntityManager.h"
-#include "Core/Components.h"
+#include "Scene/EntityManager.h"
+#include "Scene/Components.h"
 
 #include <assert.h>
 #include <memory>
@@ -7,7 +7,7 @@
 
 namespace Luma2D
 {
-    namespace Core
+    namespace Scene
     {
         std::shared_ptr<Entity> EntityManager::AddEntity(const char* tag)
         {

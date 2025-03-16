@@ -1,10 +1,10 @@
-#include "Core/Scene.h"
+#include "Scene/Scene.h"
 #include "Graphics/Shape.h"
 #include "Graphics/Sprite.h"
 
 namespace Luma2D
 {
-    namespace Core
+    namespace Scene
     {
         std::shared_ptr<Entity> Scene::AddEntity(const char* tag)
         {

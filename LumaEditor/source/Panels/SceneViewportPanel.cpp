@@ -6,6 +6,7 @@
 
 using namespace Luma2D::Core;
 using namespace Luma2D::Graphics;
+using namespace Luma2D::Scene;
 
 void SceneViewportPanel::SetContext(Scene* scene)
 {

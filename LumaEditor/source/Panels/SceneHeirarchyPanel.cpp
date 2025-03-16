@@ -5,12 +5,16 @@
 #include <rlImGuiColors.h>
 #include <memory>
 
-static const ImGuiTreeNodeFlags treeNodeFlags = ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_Framed |
-                                                ImGuiTreeNodeFlags_SpanFullWidth | ImGuiTreeNodeFlags_AllowItemOverlap;
+using namespace Luma2D::Core;
+using namespace Luma2D::Graphics;
+using namespace Luma2D::Scene;
 
 template <typename T, typename UIFunc>
 static void DrawComponent(const char* name, std::shared_ptr<Entity>& entity, UIFunc uiFunction)
 {
+    const ImGuiTreeNodeFlags treeNodeFlags = ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_Framed |
+                                             ImGuiTreeNodeFlags_SpanFullWidth | ImGuiTreeNodeFlags_AllowItemOverlap;
+
     if (entity->HasComponent<T>())
     {
         auto& component = entity->GetComponent<T>();
@@ -20,7 +24,7 @@ static void DrawComponent(const char* name, std::shared_ptr<Entity>& entity, UIF
         float lineHeight = ImGui::GetFont()->FontSize + ImGui::GetStyle().FramePadding.y * 2.f;
         ImGui::PopStyleVar();
 
-        bool open = ImGui::TreeNodeEx((void*)typeid(T).hash_code(), treeNodeFlags, "%s", name);
+        bool open = ImGui::CollapsingHeader(name);
         ImGui::SameLine(availableRegion.x - lineHeight * .5f);
 
         if (ImGui::Button("+", ImVec2(20.f, 20.f)))
@@ -36,10 +40,7 @@ static void DrawComponent(const char* name, std::shared_ptr<Entity>& entity, UIF
         }
 
         if (open)
-        {
             uiFunction(component);
-            ImGui::TreePop();
-        }
 
         if (removeComponent)
             entity->RemoveComponent<T>();
@@ -177,6 +178,23 @@ void SceneHeirarchyPanel::DrawComponents(std::shared_ptr<Entity>& entity)
 
     DrawComponent<SpriteRendererComponent>("Sprite Renderer", entity, [&](SpriteRendererComponent& component) {
         ImVec4 tint = rlImGuiColors::Convert(component.tint);
+        std::vector<std::string> textureNames = Assets->GetAllTextureNames();
+        std::string textureNamePreview = Assets->GetTextureName(component.sprite.texture);
+
+        if (ImGui::BeginCombo("Texture", textureNamePreview.c_str()))
+        {
+            for (u32 i = 0; i < textureNames.size(); i++)
+            {
+                if (ImGui::Selectable(textureNames[i].c_str()))
+                {
+                    textureNamePreview = textureNames[i];
+                    component.sprite.texture = Assets->GetTexture(textureNamePreview.c_str());
+                    break;
+                }
+            }
+            ImGui::EndCombo();
+        }
+
         ImGui::DragFloat2("Origin", &component.sprite.origin.x);
         ImGui::ColorEdit3("Tint", &tint.x);
 

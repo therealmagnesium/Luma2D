@@ -1,6 +1,6 @@
 #pragma once
 #include "Core/Base.h"
-#include "Core/Components.h"
+#include "Scene/Components.h"
 
 #include <assert.h>
 #include <string>
@@ -9,7 +9,7 @@
 
 namespace Luma2D
 {
-    namespace Core
+    namespace Scene
     {
         typedef std::tuple<TransformComponent, ShapeRendererComponent, SpriteRendererComponent, AnimatorComponent>
             ComponentTuple;
