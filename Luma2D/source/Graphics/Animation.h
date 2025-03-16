@@ -32,22 +32,20 @@ namespace Luma2D
         struct AnimationController
         {
             bool isValid = false;
-            u32 currentAnimationIndex = 0;
-            Sprite* sprite = NULL;
-            std::vector<Animation> animations;
+            std::string currentAnimationIndex;
+            std::unordered_map<std::string, Animation> animations;
             std::unordered_map<std::string, Texture*> animNameTextureMap;
         };
 
-        Animation CreateAnimation(const std::string& name, u32 speed, u32 totalFrames, u32 frameOffset,
-                                  AnimationType type);
+        Animation CreateAnimation(const char* name, u32 speed, u32 totalFrames, u32 frameOffset, AnimationType type);
         void PlayAnimation(Animation& animation);
         void PauseAnimation(Animation& animation);
         void StopAnimation(Animation& animation);
         void UpdateAnimation(Animation& animation, Sprite& sprite);
 
-        AnimationController CreateAnimationController(Sprite* sprite, u32 estimatedAnimCount);
+        AnimationController CreateAnimationController();
         void AnimControllerAddAnimation(AnimationController& controller, Animation& animation, Texture* texture);
-        void AnimControllerSwitchAnimation(AnimationController& controller, u32 animIndex);
-        void AnimControllerUpdate(AnimationController& controller);
+        void AnimControllerSwitchAnimation(AnimationController& controller, const char* name);
+        void AnimControllerUpdate(AnimationController& controller, Sprite* sprite);
     }
 }

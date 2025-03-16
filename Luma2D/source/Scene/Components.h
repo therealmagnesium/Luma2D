@@ -63,11 +63,7 @@ namespace Luma2D
             bool isEnabled = false;
             Graphics::AnimationController controller;
 
-            AnimatorComponent() = default;
-            AnimatorComponent(Graphics::Sprite* sprite, u32 estimatedAnimCount)
-            {
-                controller = Graphics::CreateAnimationController(sprite, estimatedAnimCount);
-            }
+            AnimatorComponent() { controller = Graphics::CreateAnimationController(); }
         };
     }
 }

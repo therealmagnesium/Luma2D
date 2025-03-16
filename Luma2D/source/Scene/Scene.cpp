@@ -22,10 +22,11 @@ namespace Luma2D
 
             for (auto& entity : m_entityManager.GetEntities())
             {
-                if (entity->HasComponent<AnimatorComponent>())
+                if (entity->HasComponent<AnimatorComponent>() && entity->HasComponent<SpriteRendererComponent>())
                 {
+                    auto& src = entity->GetComponent<SpriteRendererComponent>();
                     auto& ac = entity->GetComponent<AnimatorComponent>();
-                    Graphics::AnimControllerUpdate(ac.controller);
+                    Graphics::AnimControllerUpdate(ac.controller, &src.sprite);
                 }
             }
         }
@@ -38,22 +39,22 @@ namespace Luma2D
 
                 if (entity->HasComponent<ShapeRendererComponent>())
                 {
-                    auto& sc = entity->GetComponent<ShapeRendererComponent>();
-                    sc.shape.position = tc.position;
-                    sc.shape.rotation = tc.rotation;
-                    sc.shape.scale = tc.scale;
+                    auto& src = entity->GetComponent<ShapeRendererComponent>();
+                    src.shape.position = tc.position;
+                    src.shape.rotation = tc.rotation;
+                    src.shape.scale = tc.scale;
 
-                    Graphics::DrawShape(sc.shape, sc.hasFill);
+                    Graphics::DrawShape(src.shape, src.hasFill);
                 }
 
                 if (entity->HasComponent<SpriteRendererComponent>())
                 {
-                    auto& sc = entity->GetComponent<SpriteRendererComponent>();
-                    sc.sprite.position = tc.position;
-                    sc.sprite.rotation = tc.rotation;
-                    sc.sprite.scale = tc.scale;
+                    auto& src = entity->GetComponent<SpriteRendererComponent>();
+                    src.sprite.position = tc.position;
+                    src.sprite.rotation = tc.rotation;
+                    src.sprite.scale = tc.scale;
 
-                    Graphics::DrawSprite(sc.sprite, sc.tint);
+                    Graphics::DrawSprite(src.sprite, src.tint);
                 }
             }
         }

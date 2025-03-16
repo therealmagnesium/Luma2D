@@ -196,8 +196,27 @@ void SceneHeirarchyPanel::DrawComponents(std::shared_ptr<Entity>& entity)
         }
 
         ImGui::DragFloat2("Origin", &component.sprite.origin.x);
+        ImGui::DragFloat4("Crop", &component.sprite.crop.x);
         ImGui::ColorEdit3("Tint", &tint.x);
 
         component.tint = rlImGuiColors::Convert(tint);
+    });
+
+    DrawComponent<AnimatorComponent>("Animator", entity, [&](AnimatorComponent& component) {
+        std::string previousAnimIndex = component.controller.currentAnimationIndex;
+
+        if (ImGui::BeginCombo("Animations", previousAnimIndex.c_str()))
+        {
+            for (auto& [name, animation] : component.controller.animations)
+            {
+                if (ImGui::Selectable(name.c_str()))
+                {
+                    AnimControllerSwitchAnimation(component.controller, name.c_str());
+                    break;
+                }
+            }
+
+            ImGui::EndCombo();
+        }
     });
 }

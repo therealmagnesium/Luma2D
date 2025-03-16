@@ -10,8 +10,7 @@ namespace Luma2D
 {
     namespace Graphics
     {
-        Animation CreateAnimation(const std::string& name, u32 speed, u32 totalFrames, u32 frameOffset,
-                                  AnimationType type)
+        Animation CreateAnimation(const char* name, u32 speed, u32 totalFrames, u32 frameOffset, AnimationType type)
         {
             Animation animation;
             animation.name = name;
@@ -99,14 +98,13 @@ namespace Luma2D
             }
         }
 
-        AnimationController CreateAnimationController(Sprite* sprite, u32 estimatedAnimCount)
+        AnimationController CreateAnimationController()
         {
-            ASSERT_MSG(sprite != NULL, "Animation Controller cannot have a null sprite reference!");
+            // ASSERT_MSG(sprite != NULL, "Animation Controller cannot have a null sprite reference!");
 
             AnimationController controller;
-            controller.sprite = sprite;
-            controller.currentAnimationIndex = 0;
-            controller.animations.reserve(estimatedAnimCount);
+            controller.currentAnimationIndex = "Invalid";
+            controller.animations.reserve(3);
             controller.isValid = true;
 
             return controller;
@@ -120,37 +118,45 @@ namespace Luma2D
             ASSERT_MSG(texture != NULL, "Cannot add animation to Animation Controller with a null texture reference!");
 
             if (animation.isValid)
-                controller.animations.push_back(animation);
+                controller.animations[animation.name] = animation;
 
             controller.animNameTextureMap[animation.name] = texture;
         }
 
-        void AnimControllerSwitchAnimation(AnimationController& controller, u32 animIndex)
+        void AnimControllerSwitchAnimation(AnimationController& controller, const char* name)
         {
             ASSERT_MSG(controller.isValid,
                        "Animation Controllers must be created with CreateAnimationController(Sprite*, u32)!");
-            ASSERT_MSG(animIndex <= controller.animations.size(),
-                       "Failed to switch animations because the animIndex is out of bounds!");
 
-            StopAnimation(controller.animations[controller.currentAnimationIndex]); // Stop the previous animation
+            if (controller.animations.find(name) == controller.animations.end())
+            {
+                TraceLog(LOG_WARNING,
+                         "Could not switch to animation %s because it hasn't been added to the animation controller",
+                         name);
+                return;
+            }
+
+            // Stop the previous animation
+            if (controller.currentAnimationIndex != "Invalid")
+                StopAnimation(controller.animations[controller.currentAnimationIndex]);
 
             // Switch the current animation index
-            if (controller.animations[animIndex].isValid)
-                controller.currentAnimationIndex = animIndex;
+            if (controller.animations[name].isValid)
+                controller.currentAnimationIndex = name;
 
             PlayAnimation(controller.animations[controller.currentAnimationIndex]); // Play the new animation
         }
 
-        void AnimControllerUpdate(AnimationController& controller)
+        void AnimControllerUpdate(AnimationController& controller, Sprite* sprite)
         {
             ASSERT_MSG(controller.isValid,
                        "Animation Controllers must be created with CreateAnimationController(Sprite*, u32)!");
 
-            ASSERT_MSG(controller.sprite != NULL, "An Animation Controller has a referencce to a sprite that is null!");
+            ASSERT_MSG(sprite != NULL, "An animation controller has a referencce to a sprite that is null!");
 
             Animation& currentAnimation = controller.animations[controller.currentAnimationIndex];
-            controller.sprite->texture = controller.animNameTextureMap[currentAnimation.name];
-            UpdateAnimation(currentAnimation, *controller.sprite);
+            sprite->texture = controller.animNameTextureMap[currentAnimation.name];
+            UpdateAnimation(currentAnimation, *sprite);
         }
     }
 }

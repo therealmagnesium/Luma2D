@@ -27,7 +27,7 @@ void Luma2D_OnCreate()
     sprite = state.activeScene.AddEntity("Sprite");
     auto& tc = sprite->GetComponent<TransformComponent>();
     auto& sc = sprite->AddComponent<SpriteRendererComponent>((Texture*)NULL, (Vector2){64.f, 64.f});
-    auto& ac = sprite->AddComponent<AnimatorComponent>(&sc.sprite, 2);
+    auto& ac = sprite->AddComponent<AnimatorComponent>();
     tc.position = (Vector2){800.f, 200.f};
     tc.scale = 4.f;
 
@@ -36,7 +36,7 @@ void Luma2D_OnCreate()
 
     AnimControllerAddAnimation(ac.controller, idleAnimation, Assets->GetTexture("Player Idle"));
     AnimControllerAddAnimation(ac.controller, runAnimation, Assets->GetTexture("Player Run"));
-    AnimControllerSwitchAnimation(ac.controller, 0);
+    AnimControllerSwitchAnimation(ac.controller, "Idle");
 
     state.sceneHeirarchyPanel.SetContext(&state.activeScene);
     state.sceneViewportPanel.SetContext(&state.activeScene);
@@ -47,14 +47,6 @@ void Luma2D_OnCreate()
 void Luma2D_OnUpdate()
 {
     state.activeScene.Update();
-
-    auto& ac = sprite->GetComponent<AnimatorComponent>();
-
-    if (IsKeyPressed(KEY_ONE))
-        AnimControllerSwitchAnimation(ac.controller, 0);
-
-    if (IsKeyPressed(KEY_TWO))
-        AnimControllerSwitchAnimation(ac.controller, 1);
 }
 
 void Luma2D_OnRender()
